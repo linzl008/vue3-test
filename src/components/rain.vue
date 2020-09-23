@@ -18,7 +18,7 @@ export default {
 
 <style scoped>
 #canvas{
-  /*position: fixed;*/
+  position: fixed;
   width: 100%;
   height: 100vh;
   top:0;

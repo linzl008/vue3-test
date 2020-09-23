@@ -2,13 +2,6 @@
   <div class="bg">
     <rain />
     <Word />
-    <div class="rowup">
-      <img class="bg-img" src="../../assets/images/login/bg.png" alt="">
-      <img class="bg-img" src="../../assets/images/login/bg.png" alt="">
-      <img class="bg-img" src="../../assets/images/login/bg.png" alt="">
-    </div>
-    1
-    {{codeTime.code}}
   </div>
 </template>
 
@@ -24,12 +17,9 @@ export default {
   setup () {
     const codeTime = reactive({ code: 0 })
     onMounted(() => {
-      setInterval(() => {
-        codeTime.code++
-      }, 1000)
+      console.log(1)
     })
     return {
-      codeTime
     }
   }
 }
@@ -39,8 +29,10 @@ export default {
 .bg{
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(to bottom, rgb(251,194,176), rgb( 213,92,97));
-
+  background-image: url("../../assets/images/bg1.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size:cover;
   &-img{
     display: block;
     width: 100vw;

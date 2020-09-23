@@ -1,6 +1,6 @@
 <template>
   <div class="lucky">
-    <canvas class="can" ref="can" width="1200" height="600"></canvas>
+    <canvas class="can" ref="can" ></canvas>
     <canvas ref="heartCan" width=50 height=60 style="display:none;"></canvas>
   </div>
 </template>
@@ -8,17 +8,24 @@
 <script>
 import { random } from 'lodash-es'
 import createjs from 'createjs-cmd'
-console.log(createjs)
+import { calPx } from '../utils/tool'
 const HEART_COUNT = 20
 const HEART_MOVE_TIME_LOW_LIMIT = 1000
 const HEART_MOVE_TIME_HIGH_LIMIT = 1500
 function drawHeart (ctx, x, y, R, rot, color) {
   function heartPath (ctx) {
     ctx.beginPath()
-    ctx.arc(-1, 0, 1, Math.PI, 0, false)
-    ctx.arc(1, 0, 1, Math.PI, 0, false) // 貝塞尔曲线画心
-    ctx.bezierCurveTo(1.9, 1.2, 0.6, 1.6, 0, 3.0)
-    ctx.bezierCurveTo(-0.6, 1.6, -1.9, 1.2, -2, 0)
+    for (let i = 0; i < 5; i++) {
+      //因为角度是逆时针计算的，而旋转是顺时针旋转，所以是度数是负值。
+      ctx.lineTo(x + Math.cos((18 + 72 * i - rot) / 180 * Math.PI) * R,
+        y - Math.sin((18 + 72 * i - rot) / 180* Math.PI)* R);
+      ctx.lineTo(x + Math.cos((54 + 72 * i - rot) / 180 * Math.PI)  * r,
+        y - Math.sin((54 + 72 * i - rot) / 180 * Math.PI) * r);
+    }
+    // ctx.arc(-1, 0, 1, Math.PI, 0, false)
+    // ctx.arc(1, 0, 1, Math.PI, 0, false) // 貝塞尔曲线画心
+    // ctx.bezierCurveTo(1.9, 1.2, 0.6, 1.6, 0, 3.0)
+    // ctx.bezierCurveTo(-0.6, 1.6, -1.9, 1.2, -2, 0)
     ctx.closePath()
   }
   ctx.save()
@@ -32,8 +39,8 @@ function drawHeart (ctx, x, y, R, rot, color) {
 function startDrawTextAndHeart (container, heartCan, y, x, texts) {
   return new Promise(resolve => {
     const textAnimInfos = texts.split('').map((item, index) => {
-      const text = new createjs.Text(item, '50px monospace', '#000000')
-      text.x = x + index * 60
+      const text = new createjs.Text(item, calPx(50) + 'px monospace', '#fff')
+      text.x = x + index * calPx(60)
       text.y = y
       text.rotation = random(-30, 30)
       text.scale = random(1.2, 1.5)
@@ -43,7 +50,7 @@ function startDrawTextAndHeart (container, heartCan, y, x, texts) {
     function renderText () {
       const text = textAnimInfos[i]
       container.addChild(text)
-      createjs.Tween.get(text).to({ rotation: random(-10, 10), scale: random(0.8, 1) }, 100).call(() => {
+      createjs.Tween.get(text).to({ rotation: 10, scale: random(0.8, 1) }, 100).call(() => {
         if (i >= texts.length) {
           resolve()
         }
@@ -76,7 +83,7 @@ function startDrawTextAndHeart (container, heartCan, y, x, texts) {
     setTimeout(() => {
       renderText()
       renderHeart()
-    }, 2000)
+    }, 200)
   })
 }
 export default {
@@ -84,15 +91,24 @@ export default {
   mounted () {
     const heartCan = this.$refs.heartCan
     const heartCtx = heartCan.getContext('2d')
-    drawHeart(heartCtx, 25, 25, 10, 0, '#ff0000')
+    drawHeart(heartCtx, 25, 25, calPx(5), 0, '#92faff')
 
     const can = this.$refs.can
+    can.width = window.innerWidth
+    can.height = window.innerHeight
+    console.log(can)
     const stage = new createjs.Stage(can)
     const container = new createjs.Container()
     stage.addChild(container);
     (async () => {
-      await startDrawTextAndHeart(container, heartCan, 200, 350, '一直没有明确告诉你')
-      await startDrawTextAndHeart(container, heartCan, 300, 300, '遇见你是多么美好的事情')
+      const list = ['长恨歌', '白居易', '汉皇重色思倾国',
+        '御宇多年求不得',
+        '杨家有女初长成',
+        '养在深闺人未识']
+      for (let i = 0; i < list.length; i++) {
+        const heartCtx1 = list[i]
+        await startDrawTextAndHeart(container, heartCan, 100 + calPx(80) * i, 15 + (12 - heartCtx1.length) * calPx(30), heartCtx1)
+      }
     })()
 
     function tick () {
@@ -113,6 +129,10 @@ export default {
 <style scoped>
   .can {
     display:block;
-    margin: 50px auto;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 1;
   }
 </style>
