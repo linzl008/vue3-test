@@ -1,25 +1,58 @@
 <template>
   <div class="bg">
-    <rain />
-    <Word />
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <Meet @meetout="meetOut()" />
+        </div>
+        <div class="swiper-slide">
+          <Appoint @meetout="meetOut()" />
+        </div>
+        <div class="swiper-slide">
+          <rain />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import Rain from '../../components/rain.vue'
-import Word from '../../components/word.vue'
+import Meet from '../../components/meet.vue'
+import Appoint from '../../components/appoint.vue'
+import Swiper from '../../lib/swiper/swiper.js'
+import '../../lib/swiper/components/autoplay/autoplay'
+import '../../lib/swiper/components/effect-cube/effect-cube.js'
+import '../../lib/swiper/components/effect-cube/effect-cube.scss'
+let swiper: any = null
 export default {
   components: {
     Rain,
-    Word
+    Appoint,
+    Meet
   },
   setup () {
-    const codeTime = reactive({ code: 0 })
+    const index = ref(0)
+    function initSwiper () {
+      swiper = new Swiper('.swiper-container', {
+        spaceBetween: 30,
+        effect: 'cube',
+        autoplay: false
+      })
+      console.log(swiper)
+    }
+    function meetOut () {
+      console.log(swiper.activeIndex)
+      swiper.slideNext()
+    }
     onMounted(() => {
       console.log(1)
+      initSwiper()
     })
     return {
+      index,
+      meetOut
     }
   }
 }

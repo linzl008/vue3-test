@@ -15,17 +15,10 @@ const HEART_MOVE_TIME_HIGH_LIMIT = 1500
 function drawHeart (ctx, x, y, R, rot, color) {
   function heartPath (ctx) {
     ctx.beginPath()
-    for (let i = 0; i < 5; i++) {
-      //因为角度是逆时针计算的，而旋转是顺时针旋转，所以是度数是负值。
-      ctx.lineTo(x + Math.cos((18 + 72 * i - rot) / 180 * Math.PI) * R,
-        y - Math.sin((18 + 72 * i - rot) / 180* Math.PI)* R);
-      ctx.lineTo(x + Math.cos((54 + 72 * i - rot) / 180 * Math.PI)  * r,
-        y - Math.sin((54 + 72 * i - rot) / 180 * Math.PI) * r);
-    }
-    // ctx.arc(-1, 0, 1, Math.PI, 0, false)
-    // ctx.arc(1, 0, 1, Math.PI, 0, false) // 貝塞尔曲线画心
-    // ctx.bezierCurveTo(1.9, 1.2, 0.6, 1.6, 0, 3.0)
-    // ctx.bezierCurveTo(-0.6, 1.6, -1.9, 1.2, -2, 0)
+    ctx.arc(-1, 0, 1, Math.PI, 0, false)
+    ctx.arc(1, 0, 1, Math.PI, 0, false) // 貝塞尔曲线画心
+    ctx.bezierCurveTo(1.9, 1.2, 0.6, 1.6, 0, 3.0)
+    ctx.bezierCurveTo(-0.6, 1.6, -1.9, 1.2, -2, 0)
     ctx.closePath()
   }
   ctx.save()
@@ -36,13 +29,48 @@ function drawHeart (ctx, x, y, R, rot, color) {
   ctx.fillStyle = color
   ctx.fill()
 }
+function drawStar (context, R, r, x, y, rot) {
+  context.beginPath()
+  for (let i = 0; i < 5; i++) {
+    context.lineTo(x + Math.cos((18 + 72 * i - rot) / 180 * Math.PI) * R,
+      y - Math.sin((18 + 72 * i - rot) / 180 * Math.PI) * R)
+    context.lineTo(x + Math.cos((54 + 72 * i - rot) / 180 * Math.PI) * r,
+      y - Math.sin((54 + 72 * i - rot) / 180 * Math.PI) * r)
+  }
+  context.closePath()
+  context.fillStyle = '#fb3'
+  context.strokeStyle = '#fd5'
+  context.lineWidth = 3
+  context.lineJoin = 'round'
+  context.fill()
+  context.stroke()
+}
+function drawFStar (ctx, w, h, x, y) {
+  const radW = 1 / 5
+  const radH = 1 / 10
+  ctx.strokeStyle = '#ffffff'
+  ctx.beginPath()
+  ctx.moveTo(x, y)
+  ctx.lineTo(x + -radW * w, y + (1 - radH) * h)
+  ctx.lineTo(x + -w, y + h)
+  ctx.lineTo(x + -radW * w, y + (1 + radH) * h)
+  ctx.lineTo(x, y + 2 * h)
+  ctx.lineTo(x + radW * w, y + (1 + radH) * h)
+  ctx.lineTo(x + w, y + h)
+  ctx.lineTo(x + radW * w, y + (1 - radH) * h)
+  ctx.lineTo(x, y)
+  ctx.closePath()
+  ctx.fillStyle = '#dcdcdc'
+  ctx.fill()
+  ctx.stroke()
+}
 function startDrawTextAndHeart (container, heartCan, y, x, texts) {
   return new Promise(resolve => {
     const textAnimInfos = texts.split('').map((item, index) => {
-      const text = new createjs.Text(item, calPx(50) + 'px monospace', '#fff')
-      text.x = x + index * calPx(60)
-      text.y = y
-      text.rotation = random(-30, 30)
+      const text = new createjs.Text(item, calPx(50) + 'px 楷体', '#541D24')
+      text.x = x
+      text.y = y + index * calPx(70)
+      text.rotation = 0
       text.scale = random(1.2, 1.5)
       return text
     })
@@ -50,14 +78,14 @@ function startDrawTextAndHeart (container, heartCan, y, x, texts) {
     function renderText () {
       const text = textAnimInfos[i]
       container.addChild(text)
-      createjs.Tween.get(text).to({ rotation: 10, scale: random(0.8, 1) }, 100).call(() => {
+      createjs.Tween.get(text).to({ rotation: 0, scale: random(0.8, 1) }, 100).call(() => {
         if (i >= texts.length) {
           resolve()
         }
       })
       i++
       if (i < texts.length) {
-        setTimeout(renderText, 350)
+        setTimeout(renderText, 100)
       }
     }
     let j = 0
@@ -71,7 +99,7 @@ function startDrawTextAndHeart (container, heartCan, y, x, texts) {
         heart.y = startY
         heart.width = 10
         heart.height = 10
-        heart.scale = random(0.5, 1)
+        heart.scale = random(0.2, 1)
         container.addChild(heart)
         createjs.Tween.get(heart).wait(0).to({ y: random(-1200, 1200), x: random(-1200, 1200), rotatation: random(0, 360) }, random(HEART_MOVE_TIME_LOW_LIMIT, HEART_MOVE_TIME_HIGH_LIMIT))
       }
@@ -82,8 +110,8 @@ function startDrawTextAndHeart (container, heartCan, y, x, texts) {
     }
     setTimeout(() => {
       renderText()
-      renderHeart()
-    }, 200)
+      // renderHeart()
+    }, 100)
   })
 }
 export default {
@@ -91,24 +119,37 @@ export default {
   mounted () {
     const heartCan = this.$refs.heartCan
     const heartCtx = heartCan.getContext('2d')
-    drawHeart(heartCtx, 25, 25, calPx(5), 0, '#92faff')
+    // drawHeart(heartCtx, 25, 25, calPx(5), 0, '#92faff')
+    // const r = Math.random() * 5 + 5
+    // const rot = Math.random() * 360
+    // drawStar(heartCtx, r, r / 2, 10, 10, rot)
+    const w = calPx(5)
+    const h = calPx(10)
+    drawFStar(heartCtx, w, h, w, h)
 
     const can = this.$refs.can
     can.width = window.innerWidth
     can.height = window.innerHeight
-    console.log(can)
     const stage = new createjs.Stage(can)
     const container = new createjs.Container()
     stage.addChild(container);
     (async () => {
-      const list = ['长恨歌', '白居易', '汉皇重色思倾国',
-        '御宇多年求不得',
-        '杨家有女初长成',
-        '养在深闺人未识']
+      const list = ['星沉月落夜闻香',
+        '素手出锋芒',
+        '前缘再续新曲',
+        '心有意',
+        '爱无伤',
+        '江湖远',
+        '碧空长',
+        '路茫茫',
+        '闲愁滋味',
+        '多感情怀', '无限思量']
       for (let i = 0; i < list.length; i++) {
         const heartCtx1 = list[i]
-        await startDrawTextAndHeart(container, heartCan, 100 + calPx(80) * i, 15 + (12 - heartCtx1.length) * calPx(30), heartCtx1)
+        await startDrawTextAndHeart(container, heartCan, 150, calPx(650 - 60 * i), heartCtx1)
       }
+      console.log('emit-show')
+      this.$emit('show-pointer')
     })()
 
     function tick () {
@@ -133,6 +174,6 @@ export default {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    z-index: 1;
+    z-index: 0;
   }
 </style>

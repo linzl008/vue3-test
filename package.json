@@ -13,7 +13,9 @@
     "createjs": "^1.0.1",
     "createjs-cmd": "^0.1.0",
     "lodash-es": "^4.17.15",
+    "swiper": "^6.2.0",
     "vue": "^3.0.0-0",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
