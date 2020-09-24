@@ -2,7 +2,7 @@
 node_modules
 /dist
 .idea
-
+/src/assets/audio/uw.mp3
 # local env files
 .env.local
 .env.*.local
