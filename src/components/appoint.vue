@@ -2,7 +2,7 @@
     <div class="container">
       <img class="meet" src="../assets/images/word/word1.png" alt="">
       <img class="time1" src="../assets/images/word/time1.png" alt="">
-      <Word @show-pointer="showPointer"/>
+      <Word @show-pointer="showPointer"/> 
       <Pointer v-if="isShow" class="pointer" @click="$emit('meetout')"/>
     </div>
 </template>
