@@ -1,5 +1,9 @@
 <template>
   <div class="bg">
+    <img @click="toggleMusic()" class="music" :class="music?'rotate':''" src="../../assets/images/music.png" alt="">
+    <audio ref="audio" class="audio" controls autoplay loop>
+      <source src="../../assets/audio/uw.mp3" type="audio/mpeg">
+    </audio>
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
@@ -32,8 +36,11 @@ export default {
     Appoint,
     Meet
   },
-  setup () {
+  setup: function () {
     const index = ref(0)
+    const music = ref(true)
+    const audio = ref<any>(null)
+
     function initSwiper () {
       swiper = new Swiper('.swiper-container', {
         spaceBetween: 30,
@@ -46,13 +53,27 @@ export default {
       console.log(swiper.activeIndex)
       swiper.slideNext()
     }
+
+    function toggleMusic () {
+      console.log(audio)
+      if (music.value) {
+        audio.value.pause()
+      } else {
+        audio.value.play()
+      }
+      music.value = !music.value
+    }
+
     onMounted(() => {
       console.log(1)
       initSwiper()
     })
     return {
       index,
-      meetOut
+      music,
+      audio,
+      meetOut,
+      toggleMusic
     }
   }
 }
@@ -66,6 +87,29 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-size:cover;
+  .music{
+    position: fixed;
+    top:.5rem;
+    right: .5rem;
+    width: 1rem;
+    z-index: 2;
+    opacity: .5;
+  }
+  .rotate{
+    animation: rotate linear 10s infinite;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotateZ(0);
+    }
+    100% {
+      transform: rotateZ(360deg);
+    }
+  }
+  .audio{
+    display: none;
+  }
   &-img{
     display: block;
     width: 100vw;
