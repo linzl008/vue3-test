@@ -134,32 +134,57 @@ export default {
     can.style.height = window.innerHeight + 'px'
     const context = can.getContext('2d')
     context.scale(getRatio(), getRatio())
-    const stage = new createjs.Stage(can)
-    const container = new createjs.Container()
-    stage.addChild(container);
-    (async () => {
-      const list = ['星沉月落夜闻香',
-        '素手出锋芒',
-        '前缘再续新曲',
-        '心有意',
-        '爱无伤',
-        '江湖远',
-        '碧空长',
-        '路茫茫',
-        '闲愁滋味',
-        '多感情怀', '无限思量']
-      for (let i = 0; i < list.length; i++) {
-        const heartCtx1 = list[i]
-        await startDrawTextAndHeart(container, heartCan, 150 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
-      }
-      this.$emit('show-pointer')
-    })()
-
-    function tick () {
-      stage.update()
+    // this.write()
+  },
+  computed: {
+    index () {
+      return this.$store.state.index // 需要监听的数据
     }
-    createjs.Ticker.addEventListener('tick', tick)
-    createjs.Ticker.setFPS(30)
+  },
+  watch: {
+    index (newValue, oldValue) {
+      if (newValue === 0) {
+        this.write()
+      } else {
+        // this.clearCanvas()
+      }
+    }
+  },
+  methods: {
+    clearCanvas () {
+      const can = this.$refs.can
+      const cxt = can.getContext('2d')
+      cxt.clearRect(0, 0, can.width, can.height)
+    },
+    write () {
+      const heartCan = this.$refs.heartCan
+      const can = this.$refs.can
+      const stage = new createjs.Stage(can)
+      const container = new createjs.Container();// const stage = new createjs.Stage(can)
+      (async () => {
+        const list = ['星沉月落夜闻香',
+          '素手出锋芒',
+          '前缘再续新曲',
+          '心有意',
+          '爱无伤',
+          '江湖远',
+          '碧空长',
+          '路茫茫',
+          '闲愁滋味',
+          '多感情怀', '无限思量']
+        for (let i = 0; i < list.length; i++) {
+          const heartCtx1 = list[i]
+          await startDrawTextAndHeart(container, heartCan, 150 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
+        }
+        this.$emit('show-pointer')
+      })()
+      stage.addChild(container)
+      function tick () {
+        stage.update()
+      }
+      createjs.Ticker.addEventListener('tick', tick)
+      createjs.Ticker.setFPS(30)
+    }
   }
 }
 </script>

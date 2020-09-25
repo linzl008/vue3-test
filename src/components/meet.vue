@@ -3,7 +3,6 @@
       <img class="meet" src="../assets/images/word/word1.png" alt="">
       <img class="time1" src="../assets/images/word/time1.png" alt="">
       <Word @show-pointer="showPointer"/>
-      <Pointer v-if="isShow" class="pointer" @click="$emit('meetout')"/>
     </div>
 </template>
 
@@ -13,11 +12,10 @@ import { Pointer } from './base'
 import { ref } from 'vue'
 export default {
   components: {
-    Word,
-    Pointer
+    Word
   },
   emits: ['meetout'],
-  setup () {
+  setup (props, context) {
     const isShow = ref(false)
     function showPointer () {
       isShow.value = true

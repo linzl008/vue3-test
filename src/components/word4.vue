@@ -133,36 +133,90 @@ export default {
     can.style.height = window.innerHeight + 'px'
     const context = can.getContext('2d')
     context.scale(getRatio(), getRatio())
-    const stage = new createjs.Stage(can)
-    const container = new createjs.Container()
-    stage.addChild(container);
-    (async () => {
-      // 误佳期·完美结局
-      // 千金难求珍宝
-      // 家和易得欢笑
-      // 人生自是有情痴
-      // 原做双飞鸟
-      // 情两难分付
-      // 是一丝烦恼
-      // 蓦然回首神仙地
-      // 还道人间好
-      const list = ['千金难求珍宝', '家和易得欢笑', '人生自是有情痴',
-        '原做双飞鸟',
-        '情两难分付',
-        '是一丝烦恼',
-        '蓦然回首神仙地',
-        '还道人间好']
-      for (let i = 0; i < list.length; i++) {
-        const heartCtx1 = list[i]
-        await startDrawTextAndHeart(container, heartCan, 80 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
-      }
-    })()
-
-    function tick () {
-      stage.update()
+    // const stage = new createjs.Stage(can)
+    // const container = new createjs.Container()
+    // stage.addChild(container);
+    // (async () => {
+    //   // 误佳期·完美结局
+    //   // 千金难求珍宝
+    //   // 家和易得欢笑
+    //   // 人生自是有情痴
+    //   // 原做双飞鸟
+    //   // 情两难分付
+    //   // 是一丝烦恼
+    //   // 蓦然回首神仙地
+    //   // 还道人间好
+    //   const list = ['千金难求珍宝', '家和易得欢笑', '人生自是有情痴',
+    //     '原做双飞鸟',
+    //     '情两难分付',
+    //     '是一丝烦恼',
+    //     '蓦然回首神仙地',
+    //     '还道人间好']
+    //   for (let i = 0; i < list.length; i++) {
+    //     const heartCtx1 = list[i]
+    //     await startDrawTextAndHeart(container, heartCan, 80 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
+    //   }
+    // })()
+    //
+    // function tick () {
+    //   stage.update()
+    // }
+    // createjs.Ticker.addEventListener('tick', tick)
+    // createjs.Ticker.setFPS(30)
+  },
+  computed: {
+    index () {
+      return this.$store.state.index // 需要监听的数据
     }
-    createjs.Ticker.addEventListener('tick', tick)
-    createjs.Ticker.setFPS(30)
+  },
+  watch: {
+    index (newValue, oldValue) {
+      if (newValue === 3) {
+        this.write()
+      } else {
+        // this.clearCanvas()
+      }
+    }
+  },
+  methods: {
+    clearCanvas () {
+      const can = this.$refs.can
+      const cxt = can.getContext('2d')
+      cxt.clearRect(0, 0, can.width, can.height)
+    },
+    write () {
+      const heartCan = this.$refs.heartCan
+      const can = this.$refs.can
+      const stage = new createjs.Stage(can)
+      const container = new createjs.Container();// const stage = new createjs.Stage(can)
+      (async () => {
+        // 误佳期·完美结局
+        // 千金难求珍宝
+        // 家和易得欢笑
+        // 人生自是有情痴
+        // 原做双飞鸟
+        // 情两难分付
+        // 是一丝烦恼
+        // 蓦然回首神仙地
+        // 还道人间好
+        const list = ['千金难求珍宝', '家和易得欢笑', '人生自是有情痴',
+          '原做双飞鸟',
+          '情两难分付',
+          '是一丝烦恼',
+          '蓦然回首神仙地',
+          '还道人间好']
+        for (let i = 0; i < list.length; i++) {
+          const heartCtx1 = list[i]
+          await startDrawTextAndHeart(container, heartCan, 80 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
+        }
+      })()
+      stage.addChild(container)
+      function tick () {
+        stage.update()
+      }
+      createjs.Ticker.addEventListener('tick', tick)
+      createjs.Ticker.setFPS(30)
+    }
   }
 }
 </script>

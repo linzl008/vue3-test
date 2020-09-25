@@ -1,5 +1,6 @@
 <template>
   <div class="bg">
+    <Loading v-if="!loadingState" @finish="loadOver"></Loading>
     <img @click="toggleMusic()" class="music" :class="music?'rotate':''" src="../../assets/images/music.png" alt="">
     <audio ref="audio" class="audio" controls autoplay loop>
       <source src="https://webfs.yun.kugou.com/202009250936/4fecd275bd6852e8c64dd700f9b0b205/G057/M05/12/17/eQ0DAFaQGVyAYo30ACtI_TIQZ7I632.mp3" type="audio/mpeg">
@@ -25,8 +26,10 @@
 
 <script lang="ts">
 import { reactive, onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 import Rain from '../../components/rain.vue'
 import Meet from '../../components/meet.vue'
+import Loading from '../../components/loading.vue'
 import Appoint from '../../components/appoint.vue'
 import Know from '../../components/know.vue'
 import Together from '../../components/together.vue'
@@ -40,10 +43,13 @@ export default {
     // Rain,
     Appoint,
     Together,
+    Loading,
     Know,
     Meet
   },
   setup: function () {
+    const store = useStore()
+    const loadingState = ref(false)
     const index = ref(0)
     const music = ref(true)
     const audio = ref<any>(null)
@@ -51,15 +57,23 @@ export default {
     function initSwiper () {
       swiper = new Swiper('.swiper-container', {
         spaceBetween: 30,
-        loop: true,
+        loop: false,
         effect: 'cube',
-        autoplay: false
+        autoplay: false,
+        on: {
+          transitionEnd: (sw) => {
+            store.dispatch('setIndex', sw.activeIndex)
+          }
+        }
       })
     }
     function meetOut () {
       swiper.slideNext()
     }
-
+    function loadOver () {
+      loadingState.value = true
+      store.dispatch('setIndex', 0)
+    }
     function toggleMusic () {
       if (music.value) {
         audio.value.pause()
@@ -68,7 +82,6 @@ export default {
       }
       music.value = !music.value
     }
-
     onMounted(() => {
       initSwiper()
     })
@@ -76,7 +89,9 @@ export default {
       index,
       music,
       audio,
+      loadingState,
       meetOut,
+      loadOver,
       toggleMusic
     }
   }
