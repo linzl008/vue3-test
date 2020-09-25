@@ -8,7 +8,7 @@
 <script>
 import { random } from 'lodash-es'
 import createjs from 'createjs-cmd'
-import { calPx } from '../utils/tool'
+import { calPx, getRatio } from '../utils/tool'
 const HEART_COUNT = 20
 const HEART_MOVE_TIME_LOW_LIMIT = 1000
 const HEART_MOVE_TIME_HIGH_LIMIT = 1500
@@ -67,9 +67,9 @@ function drawFStar (ctx, w, h, x, y) {
 function startDrawTextAndHeart (container, heartCan, y, x, texts) {
   return new Promise(resolve => {
     const textAnimInfos = texts.split('').map((item, index) => {
-      const text = new createjs.Text(item, calPx(50) + 'px 楷体', '#541D24')
+      const text = new createjs.Text(item, calPx(50) * getRatio() + 'px myfont', '#541D24')
       text.x = x
-      text.y = y + index * calPx(70)
+      text.y = y + index * calPx(70) * getRatio()
       text.rotation = 0
       text.scale = random(1.2, 1.5)
       return text
@@ -128,8 +128,12 @@ export default {
     drawFStar(heartCtx, w, h, w, h)
 
     const can = this.$refs.can
-    can.width = window.innerWidth
-    can.height = window.innerHeight
+    can.width = window.innerWidth * getRatio()
+    can.height = window.innerHeight * getRatio()
+    can.style.width = window.innerWidth + 'px'
+    can.style.height = window.innerHeight + 'px'
+    const context = can.getContext('2d')
+    context.scale(getRatio(), getRatio())
     const stage = new createjs.Stage(can)
     const container = new createjs.Container()
     stage.addChild(container);
@@ -146,9 +150,8 @@ export default {
         '多感情怀', '无限思量']
       for (let i = 0; i < list.length; i++) {
         const heartCtx1 = list[i]
-        await startDrawTextAndHeart(container, heartCan, 150, calPx(650 - 60 * i), heartCtx1)
+        await startDrawTextAndHeart(container, heartCan, 150 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
       }
-      console.log('emit-show')
       this.$emit('show-pointer')
     })()
 

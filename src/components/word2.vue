@@ -8,7 +8,7 @@
 <script>
 import { random } from 'lodash-es'
 import createjs from 'createjs-cmd'
-import { calPx } from '../utils/tool'
+import { calPx, getRatio } from '../utils/tool'
 const HEART_COUNT = 20
 const HEART_MOVE_TIME_LOW_LIMIT = 1000
 const HEART_MOVE_TIME_HIGH_LIMIT = 1500
@@ -67,10 +67,10 @@ function drawFStar (ctx, w, h, x, y) {
 function startDrawTextAndHeart (container, heartCan, y, x, texts) {
   return new Promise(resolve => {
     const textAnimInfos = texts.split('').map((item, index) => {
-      const text = new createjs.Text(item, calPx(50) + 'px monospace', '#fff')
-      text.x = x + index * calPx(60)
-      text.y = y
-      text.rotation = random(-30, 30)
+      const text = new createjs.Text(item, calPx(50) * getRatio() + 'px myfont', '#08436E')
+      text.x = x
+      text.y = y + index * calPx(60) * getRatio()
+      text.rotation = 0
       text.scale = random(1.2, 1.5)
       return text
     })
@@ -78,14 +78,14 @@ function startDrawTextAndHeart (container, heartCan, y, x, texts) {
     function renderText () {
       const text = textAnimInfos[i]
       container.addChild(text)
-      createjs.Tween.get(text).to({ rotation: 10, scale: random(0.8, 1) }, 100).call(() => {
+      createjs.Tween.get(text).to({ rotation: 0, scale: random(0.8, 1) }, 100).call(() => {
         if (i >= texts.length) {
           resolve()
         }
       })
       i++
       if (i < texts.length) {
-        setTimeout(renderText, 350)
+        setTimeout(renderText, 100)
       }
     }
     let j = 0
@@ -111,7 +111,7 @@ function startDrawTextAndHeart (container, heartCan, y, x, texts) {
     setTimeout(() => {
       renderText()
       // renderHeart()
-    }, 200)
+    }, 100)
   })
 }
 export default {
@@ -128,21 +128,35 @@ export default {
     drawFStar(heartCtx, w, h, w, h)
 
     const can = this.$refs.can
-    can.width = window.innerWidth
-    can.height = window.innerHeight
-    console.log(can)
+    can.width = window.innerWidth * getRatio()
+    can.height = window.innerHeight * getRatio()
+    can.style.width = window.innerWidth + 'px'
+    can.style.height = window.innerHeight + 'px'
+    const context = can.getContext('2d')
+    context.scale(getRatio(), getRatio())
     const stage = new createjs.Stage(can)
     const container = new createjs.Container()
     stage.addChild(container);
     (async () => {
-      const list = ['星沉月落夜闻香', '素手出锋芒', '前缘再续新曲',
-        '心有意 爱无伤',
-        '江湖远 碧空长',
-        '路茫茫 闲愁滋味',
-        '多感情怀 无限思量']
+      // 长相思
+      // 花似伊
+      // 柳似伊
+      // 叶叶声声是别离
+      // 雨急人更急
+      //
+      // 湘江西
+      // 楚江西
+      // 万水千山远路迷
+      // 相逢终有期
+      const list = ['花似伊', '柳似伊', '叶叶声声是别离',
+        '雨急人更急',
+        '湘江西',
+        '楚江西',
+        '万水千山远路迷',
+        '相逢终有期']
       for (let i = 0; i < list.length; i++) {
         const heartCtx1 = list[i]
-        await startDrawTextAndHeart(container, heartCan, 100 + calPx(80) * i, 15 + (12 - heartCtx1.length) * calPx(30), heartCtx1)
+        await startDrawTextAndHeart(container, heartCan, 50 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
       }
     })()
 

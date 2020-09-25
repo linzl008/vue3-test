@@ -9,7 +9,7 @@
 
 <script>
 import Word from './word.vue'
-import { Pointer } from './base/index'
+import { Pointer } from './base'
 import { ref } from 'vue'
 export default {
   components: {
@@ -20,7 +20,6 @@ export default {
   setup () {
     const isShow = ref(false)
     function showPointer () {
-      console.log(123)
       isShow.value = true
     }
     return {

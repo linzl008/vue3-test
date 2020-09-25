@@ -6,3 +6,11 @@ const WIDTH = window.innerWidth
 export function calPx (num: number) {
   return WIDTH / 750 * num
 }
+
+export function getRatio () {
+  const canvas: any = document.createElement('canvas')
+  const devicePixelRatio = window.devicePixelRatio || 1
+  const backingStoreRatio = canvas.webkitBackingStorePixelRatio || 1
+  const ratio = devicePixelRatio / backingStoreRatio
+  return ratio
+}

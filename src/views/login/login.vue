@@ -2,7 +2,7 @@
   <div class="bg">
     <img @click="toggleMusic()" class="music" :class="music?'rotate':''" src="../../assets/images/music.png" alt="">
     <audio ref="audio" class="audio" controls autoplay loop>
-      <source src="../../assets/audio/uw.mp3" type="audio/mpeg">
+      <source src="https://webfs.yun.kugou.com/202009250936/4fecd275bd6852e8c64dd700f9b0b205/G057/M05/12/17/eQ0DAFaQGVyAYo30ACtI_TIQZ7I632.mp3" type="audio/mpeg">
     </audio>
     <div class="swiper-container">
       <div class="swiper-wrapper">
@@ -13,7 +13,10 @@
           <Appoint @meetout="meetOut()" />
         </div>
         <div class="swiper-slide">
-          <rain />
+          <Know @meetout="meetOut()" />
+        </div>
+        <div class="swiper-slide">
+          <Together @meetout="meetOut()" />
         </div>
       </div>
     </div>
@@ -25,6 +28,8 @@ import { reactive, onMounted, ref } from 'vue'
 import Rain from '../../components/rain.vue'
 import Meet from '../../components/meet.vue'
 import Appoint from '../../components/appoint.vue'
+import Know from '../../components/know.vue'
+import Together from '../../components/together.vue'
 import Swiper from '../../lib/swiper/swiper.js'
 import '../../lib/swiper/components/autoplay/autoplay'
 import '../../lib/swiper/components/effect-cube/effect-cube.js'
@@ -32,8 +37,10 @@ import '../../lib/swiper/components/effect-cube/effect-cube.scss'
 let swiper: any = null
 export default {
   components: {
-    Rain,
+    // Rain,
     Appoint,
+    Together,
+    Know,
     Meet
   },
   setup: function () {
@@ -44,18 +51,16 @@ export default {
     function initSwiper () {
       swiper = new Swiper('.swiper-container', {
         spaceBetween: 30,
+        loop: true,
         effect: 'cube',
         autoplay: false
       })
-      console.log(swiper)
     }
     function meetOut () {
-      console.log(swiper.activeIndex)
       swiper.slideNext()
     }
 
     function toggleMusic () {
-      console.log(audio)
       if (music.value) {
         audio.value.pause()
       } else {
@@ -65,7 +70,6 @@ export default {
     }
 
     onMounted(() => {
-      console.log(1)
       initSwiper()
     })
     return {
