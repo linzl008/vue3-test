@@ -3,7 +3,7 @@
     <Loading v-if="!loadingState" @finish="loadOver"></Loading>
     <img @click="toggleMusic()" class="music" :class="music?'rotate':''" src="../../assets/images/music.png" alt="">
     <audio ref="audio" class="audio" controls autoplay loop>
-      <source src="https://webfs.yun.kugou.com/202009250936/4fecd275bd6852e8c64dd700f9b0b205/G057/M05/12/17/eQ0DAFaQGVyAYo30ACtI_TIQZ7I632.mp3" type="audio/mpeg">
+      <source src="../../assets/audio/bg.mp3" type="audio/mpeg">
     </audio>
     <div class="swiper-container">
       <div class="swiper-wrapper">
@@ -19,8 +19,12 @@
         <div class="swiper-slide">
           <Together @meetout="meetOut()" />
         </div>
+        <div class="swiper-slide">
+          <Confession @meetout="meetOut()" @agree="agreeClick" />
+        </div>
       </div>
     </div>
+    <Sakura v-if="agree" />
   </div>
 </template>
 
@@ -28,11 +32,13 @@
 import { reactive, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import Rain from '../../components/rain.vue'
+import Sakura from '../../components/sakura.vue'
 import Meet from '../../components/meet.vue'
 import Loading from '../../components/loading.vue'
 import Appoint from '../../components/appoint.vue'
 import Know from '../../components/know.vue'
 import Together from '../../components/together.vue'
+import Confession from '../../components/confession.vue'
 import Swiper from '../../lib/swiper/swiper.js'
 import '../../lib/swiper/components/autoplay/autoplay'
 import '../../lib/swiper/components/effect-cube/effect-cube.js'
@@ -45,6 +51,8 @@ export default {
     Together,
     Loading,
     Know,
+    Confession,
+    Sakura,
     Meet
   },
   setup: function () {
@@ -53,7 +61,7 @@ export default {
     const index = ref(0)
     const music = ref(true)
     const audio = ref<any>(null)
-
+    const agree = ref(false)
     function initSwiper () {
       swiper = new Swiper('.swiper-container', {
         spaceBetween: 30,
@@ -72,6 +80,7 @@ export default {
     }
     function loadOver () {
       loadingState.value = true
+      audio.value.play()
       store.dispatch('setIndex', 0)
     }
     function toggleMusic () {
@@ -82,6 +91,9 @@ export default {
       }
       music.value = !music.value
     }
+    function agreeClick () {
+      agree.value = true
+    }
     onMounted(() => {
       initSwiper()
     })
@@ -90,8 +102,10 @@ export default {
       music,
       audio,
       loadingState,
+      agree,
       meetOut,
       loadOver,
+      agreeClick,
       toggleMusic
     }
   }

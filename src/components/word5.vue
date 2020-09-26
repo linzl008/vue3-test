@@ -67,7 +67,7 @@ function drawFStar (ctx, w, h, x, y) {
 function startDrawTextAndHeart (container, heartCan, y, x, texts) {
   return new Promise(resolve => {
     const textAnimInfos = texts.split('').map((item, index) => {
-      const text = new createjs.Text(item, calPx(50) * getRatio() + 'px myfont', '#545D4B')
+      const text = new createjs.Text(item, calPx(50) * getRatio() + 'px myfont', '#4B1A20')
       text.x = x
       text.y = y + index * calPx(60) * getRatio()
       text.rotation = 0
@@ -171,7 +171,7 @@ export default {
   },
   watch: {
     index (newValue, oldValue) {
-      if (newValue === 3) {
+      if (newValue === 4) {
         this.write()
       } else {
         // this.clearCanvas()
@@ -191,13 +191,14 @@ export default {
       const container = new createjs.Container();// const stage = new createjs.Stage(can)
       (async () => {
         // 离思五首 元稹
-        // 曾经沧海难为水，除却巫山不是云。
-        // 取次花丛懒回顾，半缘修道半缘君。
-        const list = ['曾经沧海难为水', '除却巫山不是云', '取次花丛懒回顾',
-          '半缘修道半缘君']
+        // 死生契阔，与子成说。执子之手，与子偕老。
+        const list = ['死生契阔，与子成说', ' ', '执子之手，与子偕老',
+          ' ',
+          '可乎？'
+        ]
         for (let i = 0; i < list.length; i++) {
           const heartCtx1 = list[i]
-          await startDrawTextAndHeart(container, heartCan, 60 * getRatio(), calPx(450 - 60 * i) * getRatio(), heartCtx1)
+          await startDrawTextAndHeart(container, heartCan, i * 20 + 80 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
         }
       })()
       stage.addChild(container)

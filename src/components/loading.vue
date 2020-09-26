@@ -102,12 +102,15 @@ export default {
   z-index: 1000;
   display: flex;
   left: 0;
+  transform: rotateY(0);
   align-items: center;
-  transition: 1s ease-in-out left;
+  transition: 1s ease-in-out transform;
   .box{
     width: 100%;
   }
   .word{
+    font-size: .6rem;
+    margin-bottom: .2rem;
     color: rgb(186,161,116);
     span{
       position: relative;
@@ -145,7 +148,6 @@ export default {
     border-radius: .1rem;
     .inner-bar{
       text-align: right;
-      font-size: .12rem;
       line-height: .2rem;
       border-radius: .1rem;
       background: rgb(186, 161, 116);
@@ -154,8 +156,9 @@ export default {
       transition: .5s width linear;
       span{
         position: relative;
-        top: -.25rem;
-        font-size: .12rem;
+        top: -.5rem;
+        line-height: .2rem;
+        font-size: .2rem;
       }
     }
   }
@@ -210,6 +213,8 @@ export default {
   }
 }
 .left-out{
-  left: -100%
+  // left: -100%;
+  transform: rotateY(90deg);
+  transform-origin: left;
 }
 </style>
