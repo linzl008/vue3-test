@@ -3,7 +3,7 @@
     <Loading v-if="!loadingState" @finish="loadOver"></Loading>
     <img @click="toggleMusic()" class="music" :class="music?'rotate':''" src="../../assets/images/music.png" alt="">
     <audio ref="audio" class="audio" controls autoplay loop>
-      <source src="../../assets/audio/bg.mp3" type="audio/mpeg">
+      <source :src="src" type="audio/mpeg">
     </audio>
     <div class="swiper-container">
       <div class="swiper-wrapper">
@@ -62,6 +62,8 @@ export default {
     const music = ref(true)
     const audio = ref<any>(null)
     const agree = ref(false)
+    const src = ref("")
+    src.value = require("../../assets/audio/bg.mp3")
     function initSwiper () {
       swiper = new Swiper('.swiper-container', {
         spaceBetween: 30,
@@ -103,6 +105,7 @@ export default {
       audio,
       loadingState,
       agree,
+      src,
       meetOut,
       loadOver,
       agreeClick,
@@ -127,6 +130,9 @@ export default {
     width: 1rem;
     z-index: 2;
     opacity: .5;
+  }
+  .swiper-slide{
+    overflow: hidden;
   }
   .rotate{
     animation: rotate linear 10s infinite;

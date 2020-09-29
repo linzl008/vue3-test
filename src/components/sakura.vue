@@ -15,12 +15,18 @@ export default {
         this.init(isRandom)
       }
       CHERRY_BLOSSOM.prototype = {
-        FOCUS_POSITION: 300,
+        // FOCUS_POSITION: 300,
+        // FAR_LIMIT: 600,
+        // MAX_RIPPLE_COUNT: 100,
+        // RIPPLE_RADIUS: 100,
+        // SURFACE_RATE: 0.5,
+        // SINK_OFFSET: 20,
+        FOCUS_POSITION: 150,
         FAR_LIMIT: 600,
-        MAX_RIPPLE_COUNT: 100,
-        RIPPLE_RADIUS: 100,
-        SURFACE_RATE: 0.5,
-        SINK_OFFSET: 20,
+        MAX_RIPPLE_COUNT: 50,
+        RIPPLE_RADIUS: 25,
+        SURFACE_RATE: 1,
+        SINK_OFFSET: 10,
 
         init: function (isRandom) {
           this.x = this.getRandomValue(-this.renderer.width, this.renderer.width)

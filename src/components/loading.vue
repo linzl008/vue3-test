@@ -92,6 +92,7 @@ export default {
 
 <style lang="scss" scoped>
 .loading-bg{
+  background-color: rgb(32,10,15);
   background-image: url("../assets/images/login/loading.jpg");
   background-repeat: no-repeat;
   background-position: center;

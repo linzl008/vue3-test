@@ -120,26 +120,6 @@ export default {
     bottom: 10%;
     left: 50%;
   }
-  .swiper-container-2{
-    position: absolute;
-    width: 80%;
-    margin: 10%;
-    bottom: 10%;
-    height: 5rem;
-    overflow: hidden;
-  }
-  .photo-box{
-    width: 5rem;
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .photo{
-      width: 100%;
-      height: 5rem;
-      object-fit: contain;
-    }
-  }
   .big-img-box{
     position: absolute;
     background: #000000;

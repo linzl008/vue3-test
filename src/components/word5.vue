@@ -190,11 +190,41 @@ export default {
       const stage = new createjs.Stage(can)
       const container = new createjs.Container();// const stage = new createjs.Stage(can)
       (async () => {
+        // 念奴娇·中秋 苏轼
+        // 凭高眺远，见长空万里，云无留迹。
+        // 桂魄飞来光射处，冷浸一天秋碧。
+        // 玉宇琼楼，乘鸾来去，人在清凉国。
+        // 江山如画，望中烟树历历。
+        const list = ['凭高眺远，见长空万里，云无留迹',
+          '桂魄飞来光射处，冷浸一天秋碧',
+          '玉宇琼楼，乘鸾来去，人在清凉国',
+          '江山如画，望中烟树历历',
+          ' ',
+          '与君共赏？'
+        ]
+        for (let i = 0; i < list.length; i++) {
+          const heartCtx1 = list[i]
+          await startDrawTextAndHeart(container, heartCan, 80 * getRatio(), calPx(650 - 60 * i) * getRatio(), heartCtx1)
+        }
+      })()
+      stage.addChild(container)
+      function tick () {
+        stage.update()
+      }
+      createjs.Ticker.addEventListener('tick', tick)
+      createjs.Ticker.setFPS(30)
+    },
+    writeEnd () {
+      const heartCan = this.$refs.heartCan
+      const can = this.$refs.can
+      const stage = new createjs.Stage(can)
+      const container = new createjs.Container();// const stage = new createjs.Stage(can)
+      (async () => {
         // 离思五首 元稹
         // 死生契阔，与子成说。执子之手，与子偕老。
-        const list = ['死生契阔，与子成说', ' ', '执子之手，与子偕老',
+        const list = ['长风破浪会有时', ' ', '直挂云帆济沧海',
           ' ',
-          '可乎？'
+          '与君共勉'
         ]
         for (let i = 0; i < list.length; i++) {
           const heartCtx1 = list[i]

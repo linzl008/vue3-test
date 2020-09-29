@@ -2,7 +2,7 @@
     <div class="container">
       <img class="meet" src="../assets/images/word/word5.png" alt="">
       <div class="date">{{date}}</div>
-      <Word @show-pointer="showPointer"/>
+      <Word ref="word5" @show-pointer="showPointer"/>
       <div class="btns">
         <div class="btn" :class="hideDeny ? 'move-agree':''" @click="agreeClick">是</div>
         <div class="btn" :class="hideDeny ? 'deny-hide':''" @touchstart="onTouchStart" @touchend="onTouchEnd" @touchcancel="onTouchEnd">否</div>
@@ -26,6 +26,7 @@ export default {
     const date = ref(0)
     const hideDeny = ref(false)
     const index = computed(() => store.state.index)
+    const word5 = ref(null)
     function showPointer () {
       isShow.value = true
     }
@@ -35,12 +36,16 @@ export default {
       hideDeny.value = false
     }
     function onTouchStart (e) {
+      _czc.push(['_trackEvent','page','click','否','0','0005'])
       console.log(e)
       e.stopPropagation()
       e.preventDefault()
       hideDeny.value = true
     }
     function agreeClick () {
+      _czc.push(['_trackEvent','page','click','是','0','0004'])
+      console.log(word5)
+      word5.value.writeEnd()
       console.log('click')
       context.emit('agree')
     }
@@ -73,6 +78,7 @@ export default {
       onTouchStart,
       agreeClick,
       hideDeny,
+      word5,
       isShow,
       date
     }

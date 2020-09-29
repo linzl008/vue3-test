@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "buildtest": "vue-cli-service build",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "font-spider":"font-spider ./font-spider/index.html"
   },
   "dependencies": {
     "core-js": "^3.6.5",

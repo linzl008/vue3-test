@@ -13,12 +13,11 @@
           font-family: 'myfont';
           src : url('./font/font.ttf');
       }
+      a[title="站长统计"]{
+        display: none;
+      }
   </style>
-  <script>
-    if (window.location.search.indexOf('yun') <= 0) {
-      window.location.href = 'https://www.baidu.com/s?ie=UTF-8&wd=' + "为什么八卦的人死得快？"
-    }
-  </script>
+  <script type="text/javascript" src="https://s4.cnzz.com/z_stat.php?id=1279310350&web_id=1279310350"></script>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
@@ -26,4 +25,17 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+    if (window.location.hash.indexOf('error') >= 0) {
+      _czc.push(['_trackEvent','page','view','访问页面复制链接','复制链接','0002'])
+    } else {
+      if(window.location.href.indexOf('localhost')>=0 || window.location.href.indexOf('192.168') >= 0){
+        console.log('enter');
+      }else{
+        history.pushState({},"非礼无视",window.location.pathname + "#/error" )
+      }
+      _czc.push(['_trackEvent','page','view','访问页面正确链接','正确链接','0003'])
+    }
+    _czc.push(['_trackEvent','page','view','访问页面','0','0001'])
+  </script>
 </html>
