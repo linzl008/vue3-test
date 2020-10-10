@@ -24,6 +24,7 @@ import Word from './word4.vue'
 import { Pointer } from './base'
 import { ref, onMounted, reactive } from 'vue'
 import Swiper from '../lib/swiper/swiper.js'
+import Pics from '@/data/data'
 import '../lib/swiper/components/autoplay/autoplay'
 // import '../lib/swiper/components/effect-cube/effect-cube.js'
 // import '../lib/swiper/components/effect-cube/effect-cube.scss'
@@ -43,29 +44,12 @@ export default {
       isShow: false,
       img: ''
     })
-    const pics = [
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/timg.jpg'),
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/one.jpg')
-    ]
+    const pics = Pics[3]
     function showPointer () {
       isShow.value = true
     }
     function initSwiper () {
       swiper = new Swiper('.swiper-container-2', {
-        // effect: 'coverflow',
-        // slidesPerView: 3,
-        // centeredSlides: true,
-        // coverflowEffect: {
-        //   rotate: 30,
-        //   stretch: 10,
-        //   depth: 60,
-        //   modifier: 2,
-        //   slideShadows: true
-        // },
         autoplay: {
           delay: 1000 // 1秒切换一次
         },

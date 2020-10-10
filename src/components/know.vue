@@ -24,6 +24,7 @@ import Word from './word3.vue'
 import { Pointer } from './base'
 import { ref, onMounted, reactive } from 'vue'
 import Swiper from '../lib/swiper/swiper.js'
+import Pics from '@/data/data'
 import '../lib/swiper/components/autoplay/autoplay'
 // import '../lib/swiper/components/effect-cube/effect-cube.js'
 // import '../lib/swiper/components/effect-cube/effect-cube.scss'
@@ -43,14 +44,7 @@ export default {
       isShow: false,
       img: ''
     })
-    const pics = [
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/timg.jpg'),
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/one.jpg'),
-      require('../assets/images/appoint/one.jpg')
-    ]
+    const pics = Pics[2]
     function showPointer () {
       isShow.value = true
     }

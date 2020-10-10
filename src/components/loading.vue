@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import { reactive, ref, onMounted } from 'vue'
+import Pics from '@/data/data'
 export default {
   emits: ['finish'],
   setup (props: any, context: any) {
@@ -53,20 +54,11 @@ export default {
       }, 1000)
     }
     function preload () {
-      const imgs = [
-        require('../assets/images/login/one.jpg'),
-        require('../assets/images/login/five.jpg'),
-        require('../assets/images/login/three.jpg'),
-        require('../assets/images/login/four.jpg'),
-        require('../assets/images/word/time1.png'),
-        require('../assets/images/word/time2.png'),
-        require('../assets/images/word/time3.png'),
-        require('../assets/images/word/time4.png'),
-        require('../assets/images/word/word1.png'),
-        require('../assets/images/word/word2.png'),
-        require('../assets/images/word/word3.png'),
-        require('../assets/images/word/word4.png')
-      ]
+      let imgs: string[] = []
+      for (let i = 0; i < Pics.length; i++) {
+        console.log(Pics[i])
+        imgs = imgs.concat(Pics[i])
+      }
       console.log(imgs)
       const step = Math.ceil(100 / imgs.length)
       for (const img of imgs) {
